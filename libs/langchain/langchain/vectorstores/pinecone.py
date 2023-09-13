@@ -135,7 +135,7 @@ class Pinecone(VectorStore):
             chunk_ids = ids[i : i + embedding_chunk_size]
             chunk_metadatas = metadatas[i : i + embedding_chunk_size]
             embeddings = self._embed_documents(chunk_texts)
-            async_res = [
+            async_results = [
                 self._index.upsert(
                     vectors=batch,
                     namespace=namespace,
@@ -146,7 +146,7 @@ class Pinecone(VectorStore):
                     batch_size, zip(chunk_ids, embeddings, chunk_metadatas)
                 )
             ]
-            [res.get() for res in async_res]
+            [async_result.get() for async_result in async_results]
 
         return ids
 
